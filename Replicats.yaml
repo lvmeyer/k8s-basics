@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+
+kind: ReplicaSet
+
+metadata:
+  name: front
+  labels:
+    app: webapp
+    tier: front
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: front
+
+  template:
+    metadata:
+      labels:
+        tier: front
+    spec:
+      containers:
+        - name: webserver
+          image: nginx
