@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: front-deployment
+spec:
+  selector:
+    matchLabels:
+      app: front
+
+  replicas: 1
+
+  template:
+    metadata:
+      labels:
+        app: front
+
+    spec:
+      containers:
+      - name: front
+        image: wordpress:5.8.3-php7.4-apache
+        envFrom:
+          - secretRef:
+              name: front-secrets
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: front-data
+          mountPath: /var/www/
+      volumes:
+      - name: front-data
+        persistentVolumeClaim:
+          claimName: front-pvc
