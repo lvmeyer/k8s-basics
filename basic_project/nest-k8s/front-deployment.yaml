@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: front-deploy
+
+spec:
+  selector:
+    matchLabels:
+      app: front
+
+  replicas: 1
+
+  template:
+    metadata:
+      labels:
+        app: front
+    spec:
+      containers:
+        - name: front
+          image: danlevypro/products:1.1
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: front-data
+              mountPath: /var/www/
+          imagePullPolicy: Always
+
+      volumes:
+        - name: front-data
+          persistentVolumeClaim:
+            claimName: front-pvc
